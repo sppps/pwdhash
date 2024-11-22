@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Hash generates a secure hash for the given password.
+// generates a secure hash for the given password
 func Hash(password string) (string, error) {
 	switch currentConfig.Algorithm {
 	case Argon2id:
@@ -17,7 +17,7 @@ func Hash(password string) (string, error) {
 	}
 }
 
-// Validate checks if the provided password matches the hashed password.
+// checks if the provided password matches the hashed password
 func Validate(password, hash string) error {
 	if strings.HasPrefix(hash, "$argon2id$") {
 		return validateArgon2(password, hash)

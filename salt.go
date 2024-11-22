@@ -2,7 +2,6 @@ package pwdhash
 
 import "crypto/rand"
 
-// generateRandomSalt generates a random salt of the given size.
 func generateRandomSalt(size int) ([]byte, error) {
 	r := currentConfig.RandSrc
 	if r == nil {

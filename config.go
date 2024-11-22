@@ -7,18 +7,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Config хранит параметры конфигурации для хеширования паролей.
+// stores configuration parameters for password hashing.
 type Config struct {
-	Algorithm Algorithm // Алгоритм хеширования (Argon2, Bcrypt)
-	Memory    uint32    // Память для Argon2
-	Time      uint32    // Время для Argon2
-	Threads   uint8     // Количество потоков для Argon2
-	Cost      int       // Стоимость (сложность) для Bcrypt
-	LogWriter io.Writer
-	RandSrc   io.Reader
+	Algorithm Algorithm // hashing algorithm (Argon2, Bcrypt)
+	Memory    uint32    // Argon2 memory
+	Time      uint32    // Argon2 timer
+	Threads   uint8     // Argon2 parallelism
+	Cost      int       // Bcrypt cost
+	RandSrc   io.Reader // random number generator
 }
 
-// Algorithm определяет поддерживаемые алгоритмы хеширования.
+// defines the supported hashing algorithms.
 type Algorithm int
 
 const (
@@ -26,31 +25,32 @@ const (
 	Bcrypt
 )
 
-// DefaultConfig предоставляет конфигурацию по умолчанию для хеширования.
+// provides the default configuration for hashing
 var DefaultConfig = Config{
-	Algorithm: Argon2id,           // По умолчанию используем Argon2id
-	Memory:    64 * 1024,          // 64 MB для Argon2
-	Time:      3,                  // 3 итерации для Argon2
-	Threads:   4,                  // 2 потока для Argon2
-	Cost:      bcrypt.DefaultCost, // Стоимость по умолчанию для Bcrypt
+	Algorithm: Argon2id,           // use Argon2id for default
+	Memory:    64 * 1024,          // 64 Mbytes
+	Time:      3,                  // 3 iterations
+	Threads:   4,                  // 4 threads
+	Cost:      bcrypt.DefaultCost, // default cost
 }
 
+// provides the paranoid configuration for hashing.
 var ParanoidConfig = Config{
-	Algorithm: Argon2id,
-	Memory:    192 * 1024,
-	Time:      12,
-	Threads:   8,
-	Cost:      bcrypt.MaxCost,
+	Algorithm: Argon2id,       // use Argon2id for default
+	Memory:    192 * 1024,     // 64 Mbytes
+	Time:      12,             // 3 iterations
+	Threads:   8,              // 4 threads
+	Cost:      bcrypt.MaxCost, // maximum cost
 }
 
 var currentConfig = DefaultConfig
 
-// SetConfig устанавливает глобальную конфигурацию для хеширования паролей.
+// sets the global configuration for password hashing
 func SetConfig(cfg Config) {
 	currentConfig = cfg
 }
 
-// GetConfig возвращает текущую конфигурацию хеширования.
+// returns the current hashing configuration
 func GetConfig() Config {
 	return currentConfig
 }
